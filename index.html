@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(주)에이블 경매 게임</title>
+
+    <!-- 스타일시트 연결 -->
+    <link rel="stylesheet" href="styles.css"> <!-- 외부 CSS 파일 연결 -->
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <img src="배너.jpg" alt="경매 게임 배너" class="banner-image">
+            
+            <!-- 경매 순서와 버튼들을 오른쪽에 배치 -->
+            <div class="auction-header">
+                <!-- 경매 순서 -->
+                <div class="auction-order">
+                    <strong>경매 순서:</strong>
+                    <span id="randomOrder" style="font-weight: bold;">-</span>
+                </div>
+
+                <!-- 경매 시작, 다음 시작 버튼을 오른쪽에 배치 -->
+                <div class="auction-buttons">
+                    <button id="startButton" onclick="startAuction()">경매 시작</button>
+                    <button id="nextRoundButton" onclick="nextRound()" disabled>다음 시작</button>
+                </div>
+            </div>
+
+            <!-- 경매 정보와 타이머 -->
+            <div class="auction-info">
+                <div>
+                    <strong>전체 회차</strong>
+                    <span id="currentRound">1/15</span>
+                </div>
+                <div>
+                    <strong>현재 경매 항목</strong>
+                    <span id="currentItem">-</span>
+                </div>
+                <div>
+                    <strong>최고 입찰 팀</strong>
+                    <span id="highestTeam">-</span>
+                </div>
+                <div>
+                    <strong>최고 입찰가</strong>
+                    <span id="highestBid">0</span>
+                </div>
+                <div>
+                    <div class="countdown-timer" id="timer">5</div>
+                    <button id="timerButton" onclick="startTimer()">타이머 시작</button>
+                </div>
+            </div>
+
+        <!-- 팀 금액 테이블 -->
+        <table class="team-table">
+            <thead>
+                <tr>
+                    <th>팀</th>
+                    <th>보유 금액</th>
+                    <th>경매에서 얻은 숫자</th>
+                    <th>숫자 합계</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>A</td>
+                    <td id="balanceA">1000</td>
+                    <td id="itemsA">-</td>
+                    <td id="sumA">0</td>
+                </tr>
+                <tr>
+                    <td>B</td>
+                    <td id="balanceB">1000</td>
+                    <td id="itemsB">-</td>
+                    <td id="sumB">0</td>
+                </tr>
+                <tr>
+                    <td>C</td>
+                    <td id="balanceC">1000</td>
+                    <td id="itemsC">-</td>
+                    <td id="sumC">0</td>
+                </tr>
+                <tr>
+                    <td>D</td>
+                    <td id="balanceD">1000</td>
+                    <td id="itemsD">-</td>
+                    <td id="sumD">0</td>
+                </tr>
+                <tr>
+                    <td>E</td>
+                    <td id="balanceE">1000</td>
+                    <td id="itemsE">-</td>
+                    <td id="sumE">0</td>
+                </tr>
+                <tr>
+                    <td>F</td>
+                    <td id="balanceF">1000</td>
+                    <td id="itemsF">-</td>
+                    <td id="sumF">0</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- 경매 참여 버튼들 -->
+        <div class="actions">
+            <button class="team-button" onclick="placeBid('A', 5)">팀 A +5</button>
+            <button class="team-button" onclick="placeBid('B', 5)">팀 B +5</button>
+            <button class="team-button" onclick="placeBid('C', 5)">팀 C +5</button>
+            <button class="team-button" onclick="placeBid('D', 5)">팀 D +5</button>
+            <button class="team-button" onclick="placeBid('E', 5)">팀 E +5</button>
+            <button class="team-button" onclick="placeBid('F', 5)">팀 F +5</button>
+        </div>
+
+        <!-- 금액 입력 버튼들 (주황색으로 변경) -->
+        <div class="actions">
+            <button class="amount-input-btn" onclick="customBid('A')">팀 A 금액 입력</button>
+            <button class="amount-input-btn" onclick="customBid('B')">팀 B 금액 입력</button>
+            <button class="amount-input-btn" onclick="customBid('C')">팀 C 금액 입력</button>
+            <button class="amount-input-btn" onclick="customBid('D')">팀 D 금액 입력</button>
+            <button class="amount-input-btn" onclick="customBid('E')">팀 E 금액 입력</button>
+            <button class="amount-input-btn" onclick="customBid('F')">팀 F 금액 입력</button>
+        </div>
+
+        <!-- 유찰된 숫자 Section -->
+        <div class="sequence">
+            <h3>유찰된 숫자</h3>
+            <p id="unsoldItems">-</p> <!-- 유찰된 숫자들이 가로로 배치됩니다. -->
+        </div>
+    </div>
+
+    <!-- 자바스크립트 파일 연결 -->
+    <script src="auction.js"></script>
+</body>
+</html>
