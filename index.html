@@ -1,136 +1,234 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>(주)에이블 경매 게임</title>
-
-    <!-- 스타일시트 연결 -->
-    <link rel="stylesheet" href="styles.css"> <!-- 외부 CSS 파일 연결 -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>(주)에이블 경매 게임</title>
+  <link href="https://fonts.googleapis.com/css2?family=Gmarket+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Gmarket Sans', sans-serif;
+      background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+      color: #003366;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      background: #ffffff;
+      border-radius: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+    }
+    .banner-image {
+      width: 100%;
+      border-radius: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    .auction-header {
+      background: #e3f2fd;
+      padding: 20px;
+      border-radius: 20px;
+      text-align: center;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
+    }
+    .auction-order {
+      font-size: 26px;
+      font-weight: 700;
+      color: #01579b;
+      margin-bottom: 15px;
+    }
+    .auction-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+    .auction-buttons button,
+    .auction-info button {
+      background-color: #0288d1;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .auction-buttons button:hover,
+    .auction-info button:hover {
+      background-color: #03a9f4;
+      transform: translateY(-2px);
+    }
+    .auction-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: space-around;
+      margin-bottom: 30px;
+    }
+    .auction-info div {
+      background-color: #e1f5fe;
+      padding: 25px;
+      border-radius: 20px;
+      flex: 1 1 180px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(33, 150, 243, 0.15);
+    }
+    .auction-info strong {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 10px;
+      color: #0277bd;
+    }
+    .auction-info span {
+      font-size: 34px;
+      font-weight: 700;
+      color: #000;
+    }
+    .countdown-timer {
+      font-size: 42px;
+      font-weight: bold;
+      color: #01579b;
+      margin-bottom: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 16px;
+      text-align: center;
+      border: 1px solid #bbdefb;
+      font-size: 18px;
+    }
+    th {
+      background-color: #0288d1;
+      color: white;
+      font-weight: bold;
+      font-size: 20px;
+    }
+    td:last-child {
+      background-color: #e1f5fe;
+      font-weight: bold;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+    .actions button {
+      background-color: #b3e5fc;
+      color: #01579b;
+      padding: 16px 24px;
+      border: none;
+      border-radius: 30px;
+      font-size: 17px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.2s;
+      min-width: 140px;
+    }
+    .actions button:hover {
+      background-color: #81d4fa;
+      transform: scale(1.05);
+    }
+    .sequence {
+      background-color: #e1f5fe;
+      padding: 20px;
+      border-radius: 16px;
+      text-align: center;
+      color: #0277bd;
+      font-size: 20px;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(2, 136, 209, 0.2);
+    }
+    .sequence h3 {
+      font-size: 24px;
+      margin-bottom: 6px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header Section -->
-        <div class="header">
-            <img src="배너.jpg" alt="경매 게임 배너" class="banner-image">
-            
-            <!-- 경매 순서와 버튼들을 오른쪽에 배치 -->
-            <div class="auction-header">
-                <!-- 경매 순서 -->
-                <div class="auction-order">
-                    <strong>경매 순서:</strong>
-                    <span id="randomOrder" style="font-weight: bold;">-</span>
-                </div>
+  <div class="container">
+    <img src="배너.jpg" alt="경매 게임 배너" class="banner-image" />
 
-                <!-- 경매 시작, 다음 시작 버튼을 오른쪽에 배치 -->
-                <div class="auction-buttons">
-                    <button id="startButton" onclick="startAuction()">경매 시작</button>
-                    <button id="nextRoundButton" onclick="nextRound()" disabled>다음 시작</button>
-                </div>
-            </div>
-
-            <!-- 경매 정보와 타이머 -->
-            <div class="auction-info">
-                <div>
-                    <strong>전체 회차</strong>
-                    <span id="currentRound">1/15</span>
-                </div>
-                <div>
-                    <strong>현재 경매 항목</strong>
-                    <span id="currentItem">-</span>
-                </div>
-                <div>
-                    <strong>최고 입찰 팀</strong>
-                    <span id="highestTeam">-</span>
-                </div>
-                <div>
-                    <strong>최고 입찰가</strong>
-                    <span id="highestBid">0</span>
-                </div>
-                <div>
-                    <div class="countdown-timer" id="timer">5</div>
-                    <button id="timerButton" onclick="startTimer()">타이머 시작</button>
-                </div>
-            </div>
-
-        <!-- 팀 금액 테이블 -->
-        <table class="team-table">
-            <thead>
-                <tr>
-                    <th>팀</th>
-                    <th>보유 금액</th>
-                    <th>경매에서 얻은 숫자</th>
-                    <th>숫자 합계</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>A</td>
-                    <td id="balanceA">1000</td>
-                    <td id="itemsA">-</td>
-                    <td id="sumA">0</td>
-                </tr>
-                <tr>
-                    <td>B</td>
-                    <td id="balanceB">1000</td>
-                    <td id="itemsB">-</td>
-                    <td id="sumB">0</td>
-                </tr>
-                <tr>
-                    <td>C</td>
-                    <td id="balanceC">1000</td>
-                    <td id="itemsC">-</td>
-                    <td id="sumC">0</td>
-                </tr>
-                <tr>
-                    <td>D</td>
-                    <td id="balanceD">1000</td>
-                    <td id="itemsD">-</td>
-                    <td id="sumD">0</td>
-                </tr>
-                <tr>
-                    <td>E</td>
-                    <td id="balanceE">1000</td>
-                    <td id="itemsE">-</td>
-                    <td id="sumE">0</td>
-                </tr>
-                <tr>
-                    <td>F</td>
-                    <td id="balanceF">1000</td>
-                    <td id="itemsF">-</td>
-                    <td id="sumF">0</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- 경매 참여 버튼들 -->
-        <div class="actions">
-            <button class="team-button" onclick="placeBid('A', 5)">팀 A +5</button>
-            <button class="team-button" onclick="placeBid('B', 5)">팀 B +5</button>
-            <button class="team-button" onclick="placeBid('C', 5)">팀 C +5</button>
-            <button class="team-button" onclick="placeBid('D', 5)">팀 D +5</button>
-            <button class="team-button" onclick="placeBid('E', 5)">팀 E +5</button>
-            <button class="team-button" onclick="placeBid('F', 5)">팀 F +5</button>
-        </div>
-
-        <!-- 금액 입력 버튼들 (주황색으로 변경) -->
-        <div class="actions">
-            <button class="amount-input-btn" onclick="customBid('A')">팀 A 금액 입력</button>
-            <button class="amount-input-btn" onclick="customBid('B')">팀 B 금액 입력</button>
-            <button class="amount-input-btn" onclick="customBid('C')">팀 C 금액 입력</button>
-            <button class="amount-input-btn" onclick="customBid('D')">팀 D 금액 입력</button>
-            <button class="amount-input-btn" onclick="customBid('E')">팀 E 금액 입력</button>
-            <button class="amount-input-btn" onclick="customBid('F')">팀 F 금액 입력</button>
-        </div>
-
-        <!-- 유찰된 숫자 Section -->
-        <div class="sequence">
-            <h3>유찰된 숫자</h3>
-            <p id="unsoldItems">-</p> <!-- 유찰된 숫자들이 가로로 배치됩니다. -->
-        </div>
+    <div class="auction-header">
+      <div class="auction-order">
+        <strong>경매 순서:</strong> <span id="randomOrder">-</span>
+      </div>
+      <div class="auction-buttons">
+        <button id="startButton" onclick="startAuction()">🎯 경매 시작</button>
+        <button id="nextRoundButton" onclick="nextRound()" disabled>⏭ 다음 시작</button>
+        <button onclick="undoLastBid()">↩ 되돌리기</button>
+      </div>
     </div>
 
-    <!-- 자바스크립트 파일 연결 -->
-    <script src="auction.js"></script>
+    <div class="auction-info">
+      <div><strong>전체 회차</strong><span id="currentRound">1/15</span></div>
+      <div><strong>현재 경매 항목</strong><span id="currentItem">-</span></div>
+      <div><strong>최고 입찰 팀</strong><span id="highestTeam">-</span></div>
+      <div><strong>최고 입찰가</strong><span id="highestBid">0</span></div>
+      <div>
+        <strong>타이머</strong>
+        <div class="countdown-timer" id="timer">5</div>
+        <button onclick="startTimer()">타이머 시작</button>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>팀</th><th>보유 금액</th><th>경매에서 얻은 숫자</th><th>숫자 합계</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>A</td><td id="balanceA">1000</td><td id="itemsA">-</td><td id="sumA">0</td></tr>
+        <tr><td>B</td><td id="balanceB">1000</td><td id="itemsB">-</td><td id="sumB">0</td></tr>
+        <tr><td>C</td><td id="balanceC">1000</td><td id="itemsC">-</td><td id="sumC">0</td></tr>
+        <tr><td>D</td><td id="balanceD">1000</td><td id="itemsD">-</td><td id="sumD">0</td></tr>
+        <tr><td>E</td><td id="balanceE">1000</td><td id="itemsE">-</td><td id="sumE">0</td></tr>
+        <tr><td>F</td><td id="balanceF">1000</td><td id="itemsF">-</td><td id="sumF">0</td></tr>
+      </tbody>
+    </table>
+
+    <div class="actions">
+      <button onclick="customBid('A')">A 금액 입력</button>
+      <button onclick="customBid('B')">B 금액 입력</button>
+      <button onclick="customBid('C')">C 금액 입력</button>
+      <button onclick="customBid('D')">D 금액 입력</button>
+      <button onclick="customBid('E')">E 금액 입력</button>
+      <button onclick="customBid('F')">F 금액 입력</button>
+    </div>
+
+    <div class="sequence">
+      <h3>유찰된 숫자</h3>
+      <p id="unsoldItems">-</p>
+    </div>
+  </div>
+
+  <script>
+    function startAuction() {
+      document.getElementById("startButton").disabled = true;
+      document.getElementById("nextRoundButton").disabled = false;
+      document.getElementById("randomOrder").innerText = items.join(", ");
+      document.getElementById("currentItem").innerText = items[0];
+      document.getElementById("currentItem").style.color = 'red';
+      updateDisplay();
+      resetTimer();
+    }
+  </script>
+  <script src="auction.js"></script>
 </body>
 </html>
