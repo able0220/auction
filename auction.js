@@ -15,32 +15,41 @@ const teams = {
   F: { balance: 1000, totalSpent: 0, items: [], lastBid: 0 },
 };
 
-const items = shuffleArray([...Array(15).keys()].map(i => i + 1));
+// ✅ 경매 숫자: 고정 순서 (원하면 여기 배열만 바꾸면 됨)
+const items = [8,7,2,4,10,5,6,1,12,11,3,13,14,9,15];
+
 const unsoldItems = [];
 
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
+// UI 반영
 function updateDisplay() {
   document.getElementById("highestBid").innerText = highestBid;
   document.getElementById("highestTeam").innerText = highestTeam;
 
   Object.keys(teams).forEach(team => {
+    // balance
     document.getElementById(`balance${team}`).innerText = teams[team].balance;
-    document.getElementById(`items${team}`).innerText = teams[team].items.join(", ") || "-";
-    document.getElementById(`sum${team}`).innerText = teams[team].items.reduce((sum, num) => sum + num, 0);
+
+    // items + 합계
+    const itemsCell = document.getElementById(`items${team}`);
+    itemsCell.innerText = teams[team].items.length ? teams[team].items.join(", ") : "-";
+    if (teams[team].items.length) {
+      itemsCell.classList.remove("placeholder");
+    } else {
+      itemsCell.classList.add("placeholder");
+    }
+    document.getElementById(`sum${team}`).innerText =
+      teams[team].items.reduce((sum, num) => sum + num, 0);
   });
 
-  document.getElementById("unsoldItems").innerText = unsoldItems.join(", ") || "-";
+  document.getElementById("unsoldItems").innerText =
+    unsoldItems.length ? unsoldItems.join(", ") : "-";
 
   const currentItemElement = document.getElementById("currentItem");
-  currentItemElement.innerText = currentRound <= 15 ? items[currentRound - 1] : "종료";
+  currentItemElement.innerText = currentRound <= items.length ? items[currentRound - 1] : "종료";
   currentItemElement.style.color = 'red';
+
+  // 회차 표시
+  document.getElementById("currentRound").innerText = `${Math.min(currentRound, items.length)}/${items.length}`;
 }
 
 function startTimer() {
@@ -76,26 +85,34 @@ function saveLastState() {
   lastState = {
     highestBid,
     highestTeam,
+    currentRound,
+    unsoldItems: [...unsoldItems],
     teams: JSON.parse(JSON.stringify(teams))
   };
 }
 
 function undoLastBid() {
-  if (lastState) {
-    highestBid = lastState.highestBid;
-    highestTeam = lastState.highestTeam;
-    Object.keys(teams).forEach(team => {
-      teams[team] = { ...lastState.teams[team] };
-    });
-    updateDisplay();
-  } else {
-    alert("되돌릴 수 있는 이전 입찰이 없습니다.");
+  if (!lastState) {
+    alert("되돌릴 수 있는 이전 상태가 없습니다.");
+    return;
   }
+  highestBid = lastState.highestBid;
+  highestTeam = lastState.highestTeam;
+  currentRound = lastState.currentRound;
+  // 배열 복원
+  unsoldItems.length = 0;
+  unsoldItems.push(...lastState.unsoldItems);
+  // 팀 복원
+  Object.keys(teams).forEach(team => {
+    teams[team] = { ...lastState.teams[team] };
+  });
+  updateDisplay();
 }
 
+// 입찰
 function customBid(team) {
   saveLastState();
-  const input = parseInt(prompt(`팀 ${team}이 입찰할 금액을 입력하세요:`));
+  const input = parseInt(prompt(`팀 ${team}이 입찰할 금액을 입력하세요:`), 10);
   const additionalCost = input - teams[team].lastBid;
 
   if (!isNaN(input) && input > highestBid) {
@@ -114,43 +131,47 @@ function customBid(team) {
   }
 }
 
+// 라운드 진행
 function nextRound() {
-  if (currentRound <= 15) {
-    const currentItem = items[currentRound - 1];
+  if (currentRound > items.length) return;
 
-    if (highestTeam !== "-") {
-      teams[highestTeam].items.push(currentItem);
-      teams[highestTeam].totalSpent += highestBid;
-    } else {
-      unsoldItems.push(currentItem);
-    }
+  saveLastState();
+  const currentItem = items[currentRound - 1];
 
-    Object.keys(teams).forEach(team => {
-      if (team !== highestTeam) {
-        teams[team].balance = 1000 - teams[team].totalSpent;
-      }
-      teams[team].lastBid = 0;
-    });
-
-    highestBid = 0;
-    highestTeam = "-";
-
-    document.getElementById("currentRound").innerText = `${currentRound}/15`;
-    updateDisplay();
-
-    if (currentRound === 15) {
-      alert("경매가 종료되었습니다!");
-      document.getElementById("nextRoundButton").disabled = true;
-      clearInterval(interval);
-      document.getElementById("currentItem").innerText = "종료";
-    } else {
-      currentRound++;
-      document.getElementById("currentItem").innerText = items[currentRound - 1];
-      resetTimer();
-    }
+  if (highestTeam !== "-") {
+    teams[highestTeam].items.push(currentItem);
+    teams[highestTeam].totalSpent += highestBid;
+  } else {
+    unsoldItems.push(currentItem);
   }
+
+  // 다음 라운드 준비
+  Object.keys(teams).forEach(team => {
+    if (team !== highestTeam) {
+      teams[team].balance = 1000 - teams[team].totalSpent;
+    }
+    teams[team].lastBid = 0;
+  });
+
+  highestBid = 0;
+  highestTeam = "-";
+
+  // 종료 체크
+  if (currentRound === items.length) {
+    updateDisplay();
+    alert("경매가 종료되었습니다!");
+    document.getElementById("nextRoundButton").disabled = true;
+    clearInterval(interval);
+    document.getElementById("currentItem").innerText = "종료";
+    return;
+  }
+
+  currentRound++;
+  updateDisplay();
+  resetTimer();
 }
 
+// 시작
 function startAuction() {
   document.getElementById("startButton").disabled = true;
   document.getElementById("nextRoundButton").disabled = false;
@@ -161,7 +182,70 @@ function startAuction() {
   resetTimer();
 }
 
+// ====== [정정 기능] 표 직접 수정 핸들러 ======
+function clampNumber(n) {
+  if (isNaN(n)) return null;
+  return Math.max(0, Math.floor(n));
+}
+
+function parseItemsString(str) {
+  // "1, 3,10" 같은 입력을 [1,3,10]으로
+  if (!str || str.trim() === "-" || str.trim() === "") return [];
+  const nums = str.split(",")
+    .map(s => clampNumber(parseInt(s.trim(), 10)))
+    .filter(n => n !== null);
+  return nums;
+}
+
+function handleCellCommit(e) {
+  if (e.type === "keydown" && e.key !== "Enter") return;
+  e.preventDefault?.();
+
+  const cell = e.currentTarget;
+  const team = cell.getAttribute("data-team");
+  const field = cell.getAttribute("data-field");
+  const raw = cell.innerText.trim();
+
+  if (!teams[team]) return;
+
+  if (field === "balance") {
+    const val = clampNumber(parseInt(raw, 10));
+    if (val === null) {
+      // 되돌림 (현재 state 값으로 복구)
+      cell.innerText = teams[team].balance;
+      return;
+    }
+    // balance를 직접 고치면 totalSpent도 일관성 맞춰 갱신 (1000 - balance)
+    teams[team].balance = val;
+    teams[team].totalSpent = Math.max(0, 1000 - val);
+  } else if (field === "items") {
+    const list = parseItemsString(raw);
+    teams[team].items = list;
+    // 시각 표시용 placeholder 처리
+    if (list.length === 0) {
+      cell.innerText = "-";
+      cell.classList.add("placeholder");
+    } else {
+      cell.innerText = list.join(", ");
+      cell.classList.remove("placeholder");
+    }
+  }
+
+  updateDisplay();
+}
+
+// Enter로 확정, blur로도 반영
+function attachEditableHandlers() {
+  const editableCells = document.querySelectorAll('td[contenteditable="true"]');
+  editableCells.forEach(td => {
+    td.addEventListener("keydown", handleCellCommit);
+    td.addEventListener("blur", handleCellCommit);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("randomOrder").innerText = items.join(", ");
   document.getElementById("currentItem").style.color = 'red';
+  attachEditableHandlers();
+  updateDisplay();
 });

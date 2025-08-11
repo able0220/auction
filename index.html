@@ -5,12 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>(주)에이블 경매 게임</title>
   <link href="https://fonts.googleapis.com/css2?family=Gmarket+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <!-- 외부 CSS 파일을 쓰고 싶으면 주석 해제
+  <link rel="stylesheet" href="styles.css">
+  -->
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Gmarket Sans', sans-serif;
       background: linear-gradient(to right, #a1c4fd, #c2e9fb);
@@ -46,120 +45,43 @@
       margin-bottom: 15px;
     }
     .auction-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
+      display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;
     }
-    .auction-buttons button,
-    .auction-info button {
-      background-color: #0288d1;
-      color: #fff;
-      border: none;
-      padding: 12px 24px;
-      font-size: 16px;
-      font-weight: bold;
-      border-radius: 25px;
-      cursor: pointer;
-      transition: all 0.3s;
+    .auction-buttons button, .auction-info button {
+      background-color: #0288d1; color: #fff; border: none;
+      padding: 12px 24px; font-size: 16px; font-weight: bold;
+      border-radius: 25px; cursor: pointer; transition: all 0.3s;
     }
-    .auction-buttons button:hover,
-    .auction-info button:hover {
-      background-color: #03a9f4;
-      transform: translateY(-2px);
+    .auction-buttons button:hover, .auction-info button:hover {
+      background-color: #03a9f4; transform: translateY(-2px);
     }
     .auction-info {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: space-around;
-      margin-bottom: 30px;
+      display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-around; margin-bottom: 30px;
     }
     .auction-info div {
-      background-color: #e1f5fe;
-      padding: 25px;
-      border-radius: 20px;
-      flex: 1 1 180px;
-      text-align: center;
+      background-color: #e1f5fe; padding: 25px; border-radius: 20px; flex: 1 1 180px; text-align: center;
       box-shadow: 0 2px 6px rgba(33, 150, 243, 0.15);
     }
-    .auction-info strong {
-      display: block;
-      font-size: 22px;
-      margin-bottom: 10px;
-      color: #0277bd;
-    }
-    .auction-info span {
-      font-size: 34px;
-      font-weight: 700;
-      color: #000;
-    }
-    .countdown-timer {
-      font-size: 42px;
-      font-weight: bold;
-      color: #01579b;
-      margin-bottom: 10px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 30px;
-      border-radius: 16px;
-      overflow: hidden;
-    }
-    th, td {
-      padding: 16px;
-      text-align: center;
-      border: 1px solid #bbdefb;
-      font-size: 18px;
-    }
-    th {
-      background-color: #0288d1;
-      color: white;
-      font-weight: bold;
-      font-size: 20px;
-    }
-    td:last-child {
-      background-color: #e1f5fe;
-      font-weight: bold;
-    }
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      justify-content: center;
-      margin-bottom: 30px;
-    }
+    .auction-info strong { display: block; font-size: 22px; margin-bottom: 10px; color: #0277bd; }
+    .auction-info span { font-size: 34px; font-weight: 700; color: #000; }
+    .countdown-timer { font-size: 42px; font-weight: bold; color: #01579b; margin-bottom: 10px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 10px; border-radius: 16px; overflow: hidden; }
+    th, td { padding: 16px; text-align: center; border: 1px solid #bbdefb; font-size: 18px; }
+    th { background-color: #0288d1; color: white; font-weight: bold; font-size: 20px; }
+    td:last-child { background-color: #e1f5fe; font-weight: bold; }
+    .edit-hint { font-size: 14px; color: #546e7a; margin-bottom: 20px; text-align: right; }
+    .actions { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin: 20px 0 30px; }
     .actions button {
-      background-color: #b3e5fc;
-      color: #01579b;
-      padding: 16px 24px;
-      border: none;
-      border-radius: 30px;
-      font-size: 17px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: all 0.2s;
-      min-width: 140px;
+      background-color: #b3e5fc; color: #01579b; padding: 16px 24px; border: none; border-radius: 30px; font-size: 17px;
+      cursor: pointer; font-weight: bold; transition: all 0.2s; min-width: 140px;
     }
-    .actions button:hover {
-      background-color: #81d4fa;
-      transform: scale(1.05);
-    }
-    .sequence {
-      background-color: #e1f5fe;
-      padding: 20px;
-      border-radius: 16px;
-      text-align: center;
-      color: #0277bd;
-      font-size: 20px;
-      font-weight: bold;
-      box-shadow: 0 4px 12px rgba(2, 136, 209, 0.2);
-    }
-    .sequence h3 {
-      font-size: 24px;
-      margin-bottom: 6px;
-    }
+    .actions button:hover { background-color: #81d4fa; transform: scale(1.05); }
+    .sequence { background-color: #e1f5fe; padding: 20px; border-radius: 16px; text-align: center; color: #0277bd; font-size: 20px; font-weight: bold; box-shadow: 0 4px 12px rgba(2, 136, 209, 0.2); }
+    .sequence h3 { font-size: 24px; margin-bottom: 6px; }
+    /* contenteditable 시각 피드백 */
+    td[contenteditable="true"] { outline: none; }
+    td[contenteditable="true"]:focus { box-shadow: inset 0 0 0 2px #0288d1; background: #e3f2fd; }
+    .placeholder { color: #90a4ae; font-weight: 400; }
   </style>
 </head>
 <body>
@@ -189,17 +111,49 @@
       </div>
     </div>
 
+    <div class="edit-hint">※ 표의 <b>보유 금액</b>과 <b>경매에서 얻은 숫자</b>는 더블클릭(또는 선택) 후 <b>Enter</b>로 정정 가능</div>
+
     <table>
       <thead>
         <tr><th>팀</th><th>보유 금액</th><th>경매에서 얻은 숫자</th><th>숫자 합계</th></tr>
       </thead>
       <tbody>
-        <tr><td>A</td><td id="balanceA">1000</td><td id="itemsA">-</td><td id="sumA">0</td></tr>
-        <tr><td>B</td><td id="balanceB">1000</td><td id="itemsB">-</td><td id="sumB">0</td></tr>
-        <tr><td>C</td><td id="balanceC">1000</td><td id="itemsC">-</td><td id="sumC">0</td></tr>
-        <tr><td>D</td><td id="balanceD">1000</td><td id="itemsD">-</td><td id="sumD">0</td></tr>
-        <tr><td>E</td><td id="balanceE">1000</td><td id="itemsE">-</td><td id="sumE">0</td></tr>
-        <tr><td>F</td><td id="balanceF">1000</td><td id="itemsF">-</td><td id="sumF">0</td></tr>
+        <tr>
+          <td>A</td>
+          <td id="balanceA" data-team="A" data-field="balance" contenteditable="true">1000</td>
+          <td id="itemsA" data-team="A" data-field="items" contenteditable="true" class="placeholder">-</td>
+          <td id="sumA">0</td>
+        </tr>
+        <tr>
+          <td>B</td>
+          <td id="balanceB" data-team="B" data-field="balance" contenteditable="true">1000</td>
+          <td id="itemsB" data-team="B" data-field="items" contenteditable="true" class="placeholder">-</td>
+          <td id="sumB">0</td>
+        </tr>
+        <tr>
+          <td>C</td>
+          <td id="balanceC" data-team="C" data-field="balance" contenteditable="true">1000</td>
+          <td id="itemsC" data-team="C" data-field="items" contenteditable="true" class="placeholder">-</td>
+          <td id="sumC">0</td>
+        </tr>
+        <tr>
+          <td>D</td>
+          <td id="balanceD" data-team="D" data-field="balance" contenteditable="true">1000</td>
+          <td id="itemsD" data-team="D" data-field="items" contenteditable="true" class="placeholder">-</td>
+          <td id="sumD">0</td>
+        </tr>
+        <tr>
+          <td>E</td>
+          <td id="balanceE" data-team="E" data-field="balance" contenteditable="true">1000</td>
+          <td id="itemsE" data-team="E" data-field="items" contenteditable="true" class="placeholder">-</td>
+          <td id="sumE">0</td>
+        </tr>
+        <tr>
+          <td>F</td>
+          <td id="balanceF" data-team="F" data-field="balance" contenteditable="true">1000</td>
+          <td id="itemsF" data-team="F" data-field="items" contenteditable="true" class="placeholder">-</td>
+          <td id="sumF">0</td>
+        </tr>
       </tbody>
     </table>
 
@@ -218,17 +172,6 @@
     </div>
   </div>
 
-  <script>
-    function startAuction() {
-      document.getElementById("startButton").disabled = true;
-      document.getElementById("nextRoundButton").disabled = false;
-      document.getElementById("randomOrder").innerText = items.join(", ");
-      document.getElementById("currentItem").innerText = items[0];
-      document.getElementById("currentItem").style.color = 'red';
-      updateDisplay();
-      resetTimer();
-    }
-  </script>
   <script src="auction.js"></script>
 </body>
 </html>
